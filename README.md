@@ -1,12 +1,16 @@
 # 📚 Flutter Quiz App
 
-A beautifully designed and interactive Flutter Quiz App powered by Firebase. Users can sign up, log in using email and password, attempt a 10-question timed quiz, and view their final score at the end. The app uses `Provider` for efficient state management.
+A beautifully designed and interactive Flutter Quiz App powered by Firebase. Users can sign up, log in using email and password, upload a profile picture, attempt a 10-question timed quiz, and view their final score at the end. The app uses `Provider` for efficient state management.
 
 ---
 
 ## 🚀 Features
 
 - 👤 **Email & Password Authentication** (via Firebase Auth)
+- 🖼️ **Profile Image Picker** during Sign Up (Gallery)
+- ☁️ **Image Upload to Firebase Storage**
+- 📂 **User Profile Data + Image URL stored in Firestore**
+- 🧭 **Drawer Navigation** with user's profile picture and email
 - 📝 **Real-time Questions** fetched from Firebase Firestore
 - ⏱️ **15-second Timer** per question with visual progress and color transition
 - ✅ **Instant Feedback** after selecting an answer or when time runs out
@@ -19,20 +23,20 @@ A beautifully designed and interactive Flutter Quiz App powered by Firebase. Use
 
 ## 🛠️ Tech Stack
 
-| Component         | Technology              |
-|------------------|-------------------------|
-| Frontend         | Flutter (Dart)          |
-| Auth & Database  | Firebase (Auth + Firestore) |
-| State Management | Provider                |
-| Styling          | ScreenUtil              |
+| Component         | Technology                 |
+|------------------|----------------------------|
+| Frontend         | Flutter (Dart)             |
+| Auth & Database  | Firebase (Auth + Firestore + Storage) |
+| State Management | Provider                   |
+| Styling          | ScreenUtil                 |
 
 ---
 
 ## 🔐 Authentication Flow
 
-- Users can **Sign Up** using a valid email and password.
-- Users can **Log In** using the registered email and password.
-- No phone authentication is used.
+- Users can **Sign Up** using a valid email, password, and profile picture.
+- Firebase Storage stores the uploaded image.
+- Firebase Firestore stores user profile (email + image URL).
 - Firebase Authentication handles login state persistence.
 
 ---
@@ -69,6 +73,16 @@ A beautifully designed and interactive Flutter Quiz App powered by Firebase. Use
 
 ---
 
+## 🧭 Drawer Navigation
+
+- Drawer available from every screen after login
+- Displays:
+  - User profile picture (fetched from Firestore)
+  - User email
+- Can be extended for logout, profile editing, etc.
+
+---
+
 ## 🔄 State Management
 
 - Managed using **Provider**
@@ -78,6 +92,10 @@ A beautifully designed and interactive Flutter Quiz App powered by Firebase. Use
   - Score
   - Timer state
   - Selected answer and feedback
+- `ProfileImageViewModel` handles:
+  - Picked image
+  - Upload to Firebase Storage
+  - Exposing uploaded image URL
 - Updates UI reactively via `notifyListeners()`
 
 ---
@@ -85,13 +103,20 @@ A beautifully designed and interactive Flutter Quiz App powered by Firebase. Use
 ## 📁 Firestore Structure
 
 ```
+
+users (Collection)
+└── userUID (Document)
+├── email: "[user@example.com](mailto:user@example.com)"
+└── profileImageUrl: "https\://..."
+
 quizzes (Collection)
 └── quiz1 (Document)
-    └── questions (Sub-collection)
-        ├── questionNumber: 1
-        ├── question: "What is Flutter?"
-        ├── options: [ ... ]
-        └── answer: "A UI toolkit"
+└── questions (Sub-collection)
+├── questionNumber: 1
+├── question: "What is Flutter?"
+├── options: \[ ... ]
+└── answer: "A UI toolkit"
+
 ```
 
 ---
@@ -101,10 +126,11 @@ quizzes (Collection)
 | Screen             | Description                              |
 |-------------------|------------------------------------------|
 | LoginView         | Email/Password Login                     |
-| SignupView        | Register a new account                   |
+| SignupView        | Register a new account with profile image|
 | InstructionView   | Quiz instructions & Start button         |
 | QuizView          | Question + Timer + Options + Feedback    |
 | ScoreView         | Final score out of 10                    |
+| DrawerView        | Navigation drawer with profile info      |
 
 ---
 
@@ -121,8 +147,8 @@ quizzes (Collection)
 
 4. Set up Firebase:
    - Add your `google-services.json` (Android)
-   - Enable Firestore and Firebase Auth (email/password)
-   - Add question data as described above
+   - Enable Firebase Auth, Firestore, and Firebase Storage
+   - Add question data under `quizzes/quiz1/questions` as described
 
 5. Run the app  
    `flutter run`
@@ -134,8 +160,14 @@ quizzes (Collection)
 - Add **Phone Authentication**
 - Add **Leaderboard** to store high scores
 - Add **Category-wise quizzes**
-- Add **User Profile** page
+- Add **User Profile Page** with edit options
+- Add **User Image Preview** on ScoreView and HomeView
+
+---
 
 ## 📽️ Demo Video
 
 [Watch the Demo Video](https://drive.google.com/file/d/1cEcNinRtrXqPLwu6OreSOEt4IC8BCc8d/view?usp=drivesdk)
+```
+
+---
