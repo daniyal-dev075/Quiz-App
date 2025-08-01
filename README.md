@@ -167,7 +167,6 @@ quizzes (Collection)
 
 ## 📽️ Demo Video
 
-[Watch the Demo Video](https://drive.google.com/file/d/1cEcNinRtrXqPLwu6OreSOEt4IC8BCc8d/view?usp=drivesdk)
+[Watch the Application Demo Video](https://drive.google.com/file/d/1cEcNinRtrXqPLwu6OreSOEt4IC8BCc8d/view?usp=drivesdk)
+[Watch the Authentication Demo Video](https://drive.google.com/file/d/1ltsJ2qhhVH4vjIwuEjoCHdxz1UVu8SrW/view?usp=drivesdk)
 ```
-
----
