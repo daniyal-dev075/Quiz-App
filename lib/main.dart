@@ -5,9 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:quiz_app/utils/routes/route_name.dart';
 import 'package:quiz_app/utils/routes/routes.dart';
 import 'package:quiz_app/view_model/auth_view_model.dart';
+import 'package:quiz_app/view_model/image_view_model.dart';
 import 'package:quiz_app/view_model/password_view_model.dart';
 import 'package:quiz_app/view_model/question_view_model.dart';
-
+import 'package:quiz_app/view_model/user_view_model.dart';
 import 'data/firebase/firebase_options.dart';
 
 void main() async {
@@ -21,6 +22,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PasswordViewModel()),
         ChangeNotifierProvider(create: (_) => QuestionViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => ImageViewModel()),
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: const MyApp(),
     ),

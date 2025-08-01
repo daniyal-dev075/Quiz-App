@@ -7,9 +7,8 @@ import 'package:quiz_app/res/components/custom_button.dart';
 import 'package:quiz_app/res/components/custom_text_form_field.dart';
 import 'package:quiz_app/utils/routes/route_name.dart';
 import 'package:quiz_app/view_model/password_view_model.dart';
-
-import '../utils/utils.dart';
 import '../view_model/auth_view_model.dart';
+import '../view_model/image_view_model.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -19,6 +18,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,13 +34,26 @@ class _SignupViewState extends State<SignupView> {
           child: Column(
             children: [
               SizedBox(height: 50.h),
-              Center(
-                child: Image(
-                  height: 100.h,
-                  width: 100.w,
-                  image: AssetImage('images/logo.png'),
-                ),
+              Consumer<ImageViewModel>(
+                builder: (context, profileImageVM, child) {
+                  return GestureDetector(
+                    onTap: () {
+                      profileImageVM.pickImage();
+                    },
+                    child: CircleAvatar(
+                      radius: 50.r,
+                      backgroundColor: Colors.grey.shade300,
+                      backgroundImage: profileImageVM.pickedImage != null
+                          ? FileImage(profileImageVM.pickedImage!)
+                          : null,
+                      child: profileImageVM.pickedImage == null
+                          ? Icon(Icons.camera_alt, size: 30.sp, color: Colors.grey.shade700)
+                          : null,
+                    ),
+                  );
+                },
               ),
+              SizedBox(height: 20.h),
               SizedBox(height: 20.h),
               Center(
                 child: Text(
@@ -66,6 +79,7 @@ class _SignupViewState extends State<SignupView> {
               ),
               SizedBox(height: 2.h,),
               CustomTextFormField(
+                controller: nameController,
                 hintText: 'Enter your Name',
                 prefixIcon: Icon(Icons.person_outline_outlined),
               ),
@@ -115,10 +129,13 @@ class _SignupViewState extends State<SignupView> {
                     title: 'Sign Up',
                     isLoading: provider.isLoading,
                     onPressed: () {
+                      final profileImageVM = Provider.of<ImageViewModel>(context, listen: false);
                       provider.signUp(
+                        name: nameController.text.trim(),
                         email: emailController.text.trim(),
                         password: passwordController.text.trim(),
                         context: context,
+                        profileImage: profileImageVM.pickedImage,
                       );
                     },
                   );

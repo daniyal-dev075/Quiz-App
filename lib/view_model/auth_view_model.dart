@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../utils/routes/route_name.dart';
@@ -36,24 +40,48 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
   void signUp({
+    required String name,
     required String email,
     required String password,
     required BuildContext context,
+    File? profileImage,
   }) async {
     setLoading(true);
     try {
-      await _auth.createUserWithEmailAndPassword(
+      // Create user with email & password
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      String imageUrl = '';
+      if (profileImage != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_profile_pics')
+            .child('${userCredential.user!.uid}.jpg');
+
+        await storageRef.putFile(profileImage);
+        imageUrl = await storageRef.getDownloadURL();
+      }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'name': name,
+        'email': email,
+        'profilePic': imageUrl,
+      });
+
       Utils().toastMessage('Account Created Successfully');
-      Navigator.pushNamed(context, RouteName.startView); // or wherever you want
+      Navigator.pushNamed(context, RouteName.startView);
     } on FirebaseAuthException catch (e) {
       Utils().toastMessage(e.message.toString());
     } finally {
       setLoading(false);
     }
   }
+
   void resetPassword({
     required String email,
     required BuildContext context,
