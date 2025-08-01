@@ -164,9 +164,11 @@ quizzes (Collection)
 - Add **User Image Preview** on ScoreView and HomeView
 
 ---
+## 📽️ Demo Videos
 
-## 📽️ Demo Video
+**🔹 Demo 1: App Overview**  
+[Watch Demo 1](https://drive.google.com/file/d/1cEcNinRtrXqPLwu6OreSOEt4IC8BCc8d/view?usp=drivesdk)
 
-[Watch the Application Demo Video](https://drive.google.com/file/d/1cEcNinRtrXqPLwu6OreSOEt4IC8BCc8d/view?usp=drivesdk)
-[Watch the Authentication Demo Video](https://drive.google.com/file/d/1ltsJ2qhhVH4vjIwuEjoCHdxz1UVu8SrW/view?usp=drivesdk)
-```
+**🔹 Demo 2: User Profile data Storage in FireStore,Drawer Feature **  
+[Watch Demo 2](https://drive.google.com/file/d/1ltsJ2qhhVH4vjIwuEjoCHdxz1UVu8SrW/view?usp=drivesdk)
+
